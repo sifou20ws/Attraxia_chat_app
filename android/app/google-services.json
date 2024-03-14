@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1029006598639",
+    "project_id": "attraxiachat",
+    "storage_bucket": "attraxiachat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029006598639:android:efa5d0caaa246e3221561a",
+        "android_client_info": {
+          "package_name": "com.attraxia.chat.attraxia_chat_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3dGjn-dw5jEZD6q2qbzImfNlKu5qvvtY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
