@@ -9,7 +9,7 @@ import 'package:attraxia_chat_app/widgets/custom_image_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'widgets/accueil_item_widget.dart';
+import 'widgets/chat_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
