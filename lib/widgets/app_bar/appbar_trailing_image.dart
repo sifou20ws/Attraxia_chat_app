@@ -1,6 +1,4 @@
-import 'package:attraxia_chat_app/widgets/custom_image_view.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:attraxia_chat_app/core/app_export.dart';
 
 // ignore: must_be_immutable
 class AppbarTrailingImage extends StatelessWidget {
@@ -12,9 +10,7 @@ class AppbarTrailingImage extends StatelessWidget {
   }) : super(key: key);
 
   String? imagePath;
-
   EdgeInsetsGeometry? margin;
-
   Function? onTap;
 
   @override

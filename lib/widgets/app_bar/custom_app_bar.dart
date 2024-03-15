@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:attraxia_chat_app/core/app_export.dart';
 
 // ignore: must_be_immutable
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -14,15 +13,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }) : super(key: key);
 
   final double? height;
-
   final double? leadingWidth;
-
   final Widget? leading;
-
   final Widget? title;
-
   final bool? centerTitle;
-
   final List<Widget>? actions;
 
   @override
