@@ -1,6 +1,4 @@
-import 'package:attraxia_chat_app/core/constants/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:attraxia_chat_app/core/app_export.dart';
 
 class CustomIconButton extends StatelessWidget {
   CustomIconButton({
@@ -17,17 +15,11 @@ class CustomIconButton extends StatelessWidget {
         );
 
   final Alignment? alignment;
-
   final double? height;
-
   final double? width;
-
   final EdgeInsetsGeometry? padding;
-
   final BoxDecoration? decoration;
-
   final Widget? child;
-
   final VoidCallback? onTap;
 
   @override
@@ -51,7 +43,7 @@ class CustomIconButton extends StatelessWidget {
             padding: padding ?? EdgeInsets.zero,
             decoration: decoration ??
                 BoxDecoration(
-                  color: blueGray700,
+                  color: blueGray,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(27.h),
                     topRight: Radius.circular(26.h),
