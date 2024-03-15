@@ -1,6 +1,4 @@
-import 'package:attraxia_chat_app/core/constants/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:attraxia_chat_app/core/app_export.dart';
 
 class CustomElevatedButton extends StatelessWidget {
   const CustomElevatedButton({
@@ -14,7 +12,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.textStyle = const TextStyle(
       fontWeight: FontWeight.w600,
       fontSize: 18,
-      color: primaryWhite,
+      color: white,
       fontFamily: 'Urbanist',
     ),
     this.raduis=8,
@@ -57,7 +55,7 @@ class CustomElevatedButton extends StatelessWidget {
               )
             : Center(
                 child: CircularProgressIndicator(
-                  color: primaryWhite,
+                  color: white,
                 ),
               ),
       ),

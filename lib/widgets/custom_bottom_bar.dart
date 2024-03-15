@@ -1,11 +1,4 @@
-import 'package:attraxia_chat_app/controllers/home_controller.dart';
-import 'package:attraxia_chat_app/core/constants/colors.dart';
-import 'package:attraxia_chat_app/core/utils/image_constant.dart';
-import 'package:attraxia_chat_app/widgets/custom_image_view.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:badges/badges.dart' as badges;
-import 'package:get/get.dart';
+import 'package:attraxia_chat_app/core/app_export.dart';
 
 class CustomBottomBar extends StatefulWidget {
   CustomBottomBar({this.onChanged});
@@ -63,17 +56,17 @@ class CustomBottomBarState extends State<CustomBottomBar> {
                     index==0 ? "${homeCntrl.user1Count}" : "${homeCntrl.user2Count}" ,
                     style: TextStyle(color: Colors.white),
                   ),
-                  backgroundColor: blueGray700,
+                  backgroundColor: blueGray,
                   child: Icon(
                     Icons.person_outline,
-                    color: blueGray70001,
+                    color: blueGray,
                     size: 30.w,
                   ),
                 ),
                 Text(
                   bottomMenuList[index].title,
                   style: TextStyle(
-                    color: blueGray70001,
+                    color: blueGray,
                     fontSize: 14.sp,
                     fontFamily: 'Urbanist',
                     fontWeight: FontWeight.w600,
@@ -94,17 +87,17 @@ class CustomBottomBarState extends State<CustomBottomBar> {
                     index==0 ? "${homeCntrl.user1Count}" : "${homeCntrl.user2Count}" ,
                     style: TextStyle(color: Colors.white),
                   ),
-                  backgroundColor: blueGray700,
+                  backgroundColor: blueGray,
                   child: Icon(
                     Icons.person,
-                    color: blueGray700,
+                    color: blueGray,
                     size: 30.w,
                   ),
                 ),
                 Text(
                   bottomMenuList[index].title,
                   style: TextStyle(
-                    color: blueGray700,
+                    color: blueGray,
                     fontSize: 18.sp,
                     fontFamily: 'Urbanist',
                     fontWeight: FontWeight.w700,
