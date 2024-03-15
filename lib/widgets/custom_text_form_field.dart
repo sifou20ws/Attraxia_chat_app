@@ -1,7 +1,4 @@
-import 'package:attraxia_chat_app/core/constants/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:attraxia_chat_app/core/app_export.dart';
 
 // ignore_for_file: must_be_immutable
 class CostumeTextField extends StatelessWidget {
@@ -80,7 +77,7 @@ class CostumeTextField extends StatelessWidget {
             fontFamily: 'Urbanist',
           ),
           isDense: true,
-          fillColor:primaryWhite,
+          fillColor:white,
           filled: true,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.h),

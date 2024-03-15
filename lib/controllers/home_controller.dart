@@ -1,6 +1,4 @@
-import 'package:attraxia_chat_app/models/messages_list_model.dart';
-import 'package:attraxia_chat_app/widgets/message_bubble.dart';
-import 'package:get/get.dart';
+import 'package:attraxia_chat_app/core/app_export.dart';
 
 class HomeController extends GetxController {
   
@@ -39,7 +37,16 @@ class HomeController extends GetxController {
     _messagesList = messages ;
     update();
   }
+  void clearMsgList(){
+    _messagesList = [] ;
+  }
 
+  bool _loading = false ;
+  bool get loading => _loading;
+  void updateLoading(bool value){
+    _loading = value ;
+    // update();
+  }
   // List<MessageBubble> _chats =[];
   // List<MessageBubble> get chats => _chats;
   // void updateChats({required MessageBubble chat }){
