@@ -1,6 +1,4 @@
-import 'package:attraxia_chat_app/core/constants/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:attraxia_chat_app/core/app_export.dart';
 
 // ignore: must_be_immutable
 class AppbarTitle extends StatelessWidget {
@@ -12,9 +10,7 @@ class AppbarTitle extends StatelessWidget {
   }) : super(key: key);
 
   String text;
-
   EdgeInsetsGeometry? margin;
-
   Function? onTap;
 
   @override
@@ -28,7 +24,7 @@ class AppbarTitle extends StatelessWidget {
         child: Text(
           text,
           style: TextStyle(
-            color: blueGray70001,
+            color: blueGray,
             fontSize: 18.sp,
             fontFamily: 'Urbanist',
             fontWeight: FontWeight.w600,

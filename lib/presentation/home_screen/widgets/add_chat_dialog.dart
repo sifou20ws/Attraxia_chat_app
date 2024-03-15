@@ -1,15 +1,5 @@
-import 'package:attraxia_chat_app/controllers/home_controller.dart';
-import 'package:attraxia_chat_app/core/constants/colors.dart';
-import 'package:attraxia_chat_app/presentation/user_container_screen/user_container_screen.dart';
-import 'package:attraxia_chat_app/widgets/custom_elevated_button.dart';
-import 'package:attraxia_chat_app/widgets/custom_text_form_field.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui' as ui;
-
-import 'package:get/get.dart';
+import 'package:attraxia_chat_app/core/app_export.dart';
 
 // ignore_for_file: must_be_immutable
 class AddChatDialogue extends StatefulWidget {
@@ -24,6 +14,7 @@ class _AddChatDialogueState extends State<AddChatDialogue> {
 
   TextEditingController nameController = TextEditingController();
   bool loading = false ;
+  bool error = false ;
 
   @override
   Widget build(BuildContext context) {
@@ -81,29 +72,55 @@ class _AddChatDialogueState extends State<AddChatDialogue> {
                 onChanged: (value) {},
                 textInputAction: TextInputAction.next,
               ),
+              if(error)
+                SizedBox(
+                  height: 24.h,
+                  child: FittedBox(
+                    child: Text(
+                      'Please enter a valid name',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12.sp,
+                        color: Colors.redAccent,
+                        fontFamily: 'Urbanist',
+                      ),
+                    ),
+                  ),
+                ),
               SizedBox(height: 25.h),
               CustomElevatedButton(
                 height: 38.h,
                 text: "Create chat",
-                color: blueGray700,
+                color: blueGray,
                 loading:loading,
                 onTap: () async {
-                  loading = true ;
-                  setState(() {});
-                  DocumentReference doc = await FirebaseFirestore.instance.collection("Messages").add({
-                    'chat_name': nameController.text,
-                    'user1_count': 0,
-                    'user2_count': 0,
-                    'created': DateTime.now(),
-                    'updated': DateTime.now(),
-                    'chat_id' : '',
-                  });
-                  await FirebaseFirestore.instance.collection("Messages").doc(doc.id).update({
-                    'chat_id': doc.id ,
-                  });
-                  homeCntrl.updateChatId(chatId: doc.id);
-                  homeCntrl.updateChatName(chatName: nameController.text);
-                  Get.to(UserContainerScreen());
+                  if(nameController.text.isNotEmpty){
+                    loading = true;
+                    setState(() {});
+                    DocumentReference doc = await FirebaseFirestore.instance
+                        .collection("Messages")
+                        .add({
+                      'chat_name': nameController.text,
+                      'user1_count': 0,
+                      'user2_count': 0,
+                      'created': DateTime.now(),
+                      'updated': DateTime.now(),
+                      'chat_id': '',
+                    });
+                    await FirebaseFirestore.instance
+                        .collection("Messages")
+                        .doc(doc.id)
+                        .update({
+                      'chat_id': doc.id,
+                    });
+                    homeCntrl.updateChatId(chatId: doc.id);
+                    homeCntrl.updateChatName(chatName: nameController.text);
+                    Get.back();
+                    Get.to(UserContainerScreen());
+                  }else{
+                    error = true ;
+                    setState(() {});
+                  }
                 },
               ),
             ],
