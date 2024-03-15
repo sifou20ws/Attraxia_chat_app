@@ -1,107 +1,86 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class FireStoreServices {
-  var user = FirebaseFirestore.instance.collection('clients');
+  var user = FirebaseFirestore.instance.collection('Messages');
 
-  Future<StoreDataResult> addClientInfoToDB({
-    required String uid,
-    required String email ,
-    required String password ,
-    required BuildContext context,
+  Future<void> sendMessage({
+    required String message,
+    required String sender,
+    required String selectedChat,
+    required int userCount,
+    required String userCountN,
   }) async {
-    StoreDataResult res;
+    // a function to store a message in firestore collection
     bool result = false;
-    String message = '';
     try {
-      await user.doc(uid).set(getEmptyUser(email: email, password: password, uid: uid)).then(
+      String docId = '';
+      await user.doc(selectedChat).collection('Messages_list').add(
+        {
+          'message': message,
+          'sender': sender,
+          'time': DateTime.now(),
+          'read': false,
+          'message_id': '',
+          'created': DateTime.now(),
+          'updated': DateTime.now(),
+        },
+      ).then(
         (value) {
+          docId = value.id;
           result = true;
-          message = 'Client Data added successfully';
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message)),
-          );
         },
       ).catchError(
         (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(e.message.toString())),
-          );
           result = false;
-          message = 'Error occurred while storing patient data';
+          Get.snackbar('Error occured', e);
         },
       );
-      return StoreDataResult(success: result, message: message);
+
+      if (result) {
+        await user
+            .doc(selectedChat)
+            .collection('Messages_list')
+            .doc(docId)
+            .update({'message_id': docId});
+        print('${sender}_count');
+        await user.doc(selectedChat).update({userCountN: userCount + 1});
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
-      return res = StoreDataResult(
-          success: false,
-          message: 'failed to store patient data \n' + e.toString());
+      Get.snackbar('Error occured', e.toString());
     }
   }
 
-  Future<bool> checkExistingUser(String uid) async {
-    DocumentSnapshot snapshot = await user.doc(uid).get();
-    if (snapshot.exists) {
-      return true;
-    } else {
-      return false;
-    }
+  Future<void> deleteChat({required String chatId}) async {
+    // a function to delete the selected chat from firestore
+    await user.doc(chatId).delete().then(
+      (value) {
+        Get.back();
+        Get.showSnackbar(
+            GetSnackBar(title: 'Success', message: 'your chat was deleted'));
+      },
+    ).catchError(
+      (e) {
+        Get.snackbar('Error', e);
+      },
+    );
   }
 }
 
-class StoreDataResult {
-  StoreDataResult({
-    this.uid = '',
-    required this.success,
-    this.message = '',
-  });
-  final String uid, message;
-  final bool success;
+String timeStampToDate(Timestamp time) {
+  // Function that take a Timestamp and return a date (YYYY/MM/DD)
+  String date = time.toDate().year.toString() +
+      '/' +
+      time.toDate().month.toString().padLeft(2, '0') +
+      '/' +
+      time.toDate().day.toString().padLeft(2, '0');
+  return date;
 }
 
-class AddDataToFireStore {
-  AddDataToFireStore({
-    required this.success,
-    required this.error,
-  });
-  final String error;
-  final bool success;
-}
-
-Map<String, dynamic> getEmptyUser({required String email,required String password ,required String uid }) {
-  Map<String, dynamic> user = {
-    "email":email,
-    "password":password,
-    "uid":uid,
-    "nom": "",
-    "tel": '',
-    "image": "",
-    "mainPosition": {
-      "lat": 0.0,
-      "lan": 0.0,
-      "address":"",
-      "wilaya":"",
-      "ville":"",
-      "type":"",
-    },
-    "favorite":[],
-    "rating": {
-      "star": 0,
-      "nbr": 0,
-      "say": [""]
-    },
-    "online": true,
-    "nbr_commande": 0,
-    "dette": 0,
-    "contry": "Algeria",
-    "countryId": "213",
-    "date_creation": DateTime.now(),
-    "date_update": DateTime.now(),
-    "token":'',
-  };
-
-  return user;
+String timeStampToTime(Timestamp time) {
+  // Function that take a Timestamp and return a Time (HH:MM)
+  String hour = time.toDate().hour.toString().padLeft(2, '0') +
+      ':' +
+      time.toDate().minute.toString().padLeft(2, '0');
+  return hour;
 }
