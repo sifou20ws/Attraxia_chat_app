@@ -1,16 +1,20 @@
-# attraxia_chat_app
+# Attraxia chat app
 
-A new Flutter project.
+This Flutter project is a simple 2-screen chat application where each screen represents a different user. 
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+To run the app, follow these steps:
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1- Clone this repository to your local machine.
+2- Open the project in your preferred IDE.
+3- Ensure you have Flutter and Dart installed on your machine.
+4- Choose one of the following options for Firebase setup:
+      Use My Pre-configured Firebase Project (start using the app directly).
+      Add Your Firebase Project:
+        Install Firebase CLI by following the installation instructions.
+        Log into Firebase using the Google account associated with your Firebase project by running firebase login.
+        Install the FlutterFire CLI by running dart pub global activate flutterfire_cli.
+        Run flutterfire configure and follow the steps in the workflow, making sure to select your Firebase project.
+        Enable the Cloud Firestore service in your Firebase project from the Firebase console.
+Run the app on an emulator or physical device.
