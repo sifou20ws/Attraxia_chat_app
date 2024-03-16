@@ -14,18 +14,18 @@ To run the app, follow these steps:
 
 4. Choose one of the following options for Firebase setup:
 
-   Use My Pre-configured Firebase Project (start using the app directly).
+   * Use My Pre-configured Firebase Project (start using the app directly).
       
-   Add Your Firebase Project:
+   * Add Your Firebase Project:
       
-     Install Firebase CLI by following the installation instructions - https://firebase.google.com/docs/cli#setup_update_cli .
+     - Install Firebase CLI by following the installation instructions - https://firebase.google.com/docs/cli#setup_update_cli .
   
-     Log into Firebase using the Google account associated with your Firebase project by running - `firebase login` .
+     - Log into Firebase using the Google account associated with your Firebase project by running - `firebase login` .
   
-     Install the FlutterFire CLI by running - `dart pub global activate flutterfire_cli`.
+     - Install the FlutterFire CLI by running - `dart pub global activate flutterfire_cli`.
   
-     Run flutterfire configure and follow the steps in the workflow, making sure to select your Firebase project.
+     - Run flutterfire configure and follow the steps in the workflow, making sure to select your Firebase project.
   
-     Enable the Cloud Firestore service in your Firebase project from the Firebase console.
+     - Enable the Cloud Firestore service in your Firebase project from the Firebase console.
 
-Run the app on an emulator or physical device.
+5. Run the app on an emulator or physical device.
