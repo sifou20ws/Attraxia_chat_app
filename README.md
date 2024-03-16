@@ -18,11 +18,11 @@ To run the app, follow these steps:
       
    Add Your Firebase Project:
       
-     Install Firebase CLI by following the installation instructions.
+     Install Firebase CLI by following the installation instructions - https://firebase.google.com/docs/cli#setup_update_cli .
   
      Log into Firebase using the Google account associated with your Firebase project by running - `firebase login` .
   
-     Install the FlutterFire CLI by running dart pub global activate flutterfire_cli.
+     Install the FlutterFire CLI by running - `dart pub global activate flutterfire_cli`.
   
      Run flutterfire configure and follow the steps in the workflow, making sure to select your Firebase project.
   
