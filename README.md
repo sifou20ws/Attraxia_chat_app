@@ -35,12 +35,6 @@ To run the app, follow these steps:
 The database collection in this project is structured as follows :
 
 # Messages collection
-<img width="1250" alt="image" src="https://github.com/sifou20ws/Attraxia_chat_app/assets/84464555/9368e214-538b-4945-9677-ee211c0dbc37">
-# Messages Subcollection
-<img width="1156" alt="image" src="https://github.com/sifou20ws/Attraxia_chat_app/assets/84464555/882d562b-f81b-4fb0-a582-f392df4fbca6">
-
-
-# Messages Collection
 The messages collection stores all the chats within the application. Each document within this collection represents a unique chat and contains the following attributes:
 
 * chat_name: The name of the chat.
@@ -49,7 +43,10 @@ The messages collection stores all the chats within the application. Each docume
 * updated: Timestamp indicating the last updated time of the chat.
 * user1_count: A counter representing the number of unread messages for User 1. When a message is sent from User 2, user1_count is incremented by 1. When navigating to User 1's screen, user1_count is set to 0, indicating that all messages have been viewed.
 * user2_count: A counter representing the number of unread messages for User 2. When a message is sent from User 1, user2_count is incremented by 1. When navigating to User 2's screen, user2_count is set to 0, indicating that all messages have been viewed.
-# Message Subcollection
+  
+<img width="1250" alt="image" src="https://github.com/sifou20ws/Attraxia_chat_app/assets/84464555/9368e214-538b-4945-9677-ee211c0dbc37">
+
+# Messages Subcollection
 Each chat document within the Messages collection contains a subcollection named Messages_list, which stores the individual messages exchanged within that chat. Each document within this subcollection represents a single message and contains the following attributes:
 
 - message: The content of the message.
@@ -57,7 +54,9 @@ Each chat document within the Messages collection contains a subcollection named
 - read: A boolean indicating the read status of the message (used to show read status in the message bubble).
 - sender: The sender of the message.
 - message_id: The unique identifier for the message document.
+  
+<img width="1156" alt="image" src="https://github.com/sifou20ws/Attraxia_chat_app/assets/84464555/882d562b-f81b-4fb0-a582-f392df4fbca6">
 
-Usage
+# Usage
 When a new chat is created, a document is added to the `Messages` collection with the corresponding chat details. Each chat document includes counters to track unread messages for each user. These counters are updated in real-time as messages are sent and viewed by users. 
 Each chat document includes a `messages_list` subcollection to store the individual messages exchanged within that chat. 
