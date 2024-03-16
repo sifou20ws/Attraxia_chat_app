@@ -2,6 +2,8 @@ import 'widgets/chat_widget.dart';
 import 'package:attraxia_chat_app/core/app_export.dart';
 
 class HomeScreen extends StatefulWidget {
+
+
   HomeScreen({Key? key}) : super(key: key);
 
   @override
