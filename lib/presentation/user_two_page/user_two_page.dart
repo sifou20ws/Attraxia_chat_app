@@ -1,17 +1,4 @@
-import 'package:attraxia_chat_app/controllers/home_controller.dart';
-import 'package:attraxia_chat_app/core/utils/image_constant.dart';
-import 'package:attraxia_chat_app/presentation/home_screen/home_screen.dart';
-import 'package:attraxia_chat_app/widgets/app_bar/appbar_leading_image.dart';
-import 'package:attraxia_chat_app/widgets/app_bar/appbar_title.dart';
-import 'package:attraxia_chat_app/widgets/app_bar/custom_app_bar.dart';
-import 'package:attraxia_chat_app/widgets/custom_icon_button.dart';
-import 'package:attraxia_chat_app/widgets/custom_image_view.dart';
-import 'package:attraxia_chat_app/widgets/custom_text_form_field.dart';
-import 'package:attraxia_chat_app/widgets/message_bubble.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:attraxia_chat_app/core/app_export.dart';
 
 // ignore_for_file: must_be_immutable
 class UserTwoScreen extends StatelessWidget {
@@ -20,113 +7,162 @@ class UserTwoScreen extends StatelessWidget {
   TextEditingController messageController = TextEditingController();
   HomeController homeCntrl = Get.find();
 
+  List<MessageBubble> messages = [];
+
+  List<Widget> messageBubbles = [];
+  List<MessageModel> _messagesList = [];
+
   @override
   Widget build(BuildContext context) {
-    List<MessageBubble> messages = [];
+
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: FirebaseFirestore.instance
+            .collection("Messages")
+            .doc(homeCntrl.selectedChatId)
+            .collection('Messages_list')
+            .orderBy('time', descending: true)
+            .snapshots(), // strean to listen to the collection of messages of the selected chat
+        builder: (context, snapshot) {
+          if(snapshot.connectionState == ConnectionState.waiting){
+            homeCntrl.updateLoading(true);
+          }
+          if (snapshot.hasData) {
+            // if there is data store it in the message list
+            _messagesList = [];
+            for (QueryDocumentSnapshot<Map<String, dynamic>> doc
+            in snapshot.data!.docs) {
+              _messagesList.add(MessageModel.fromJson(doc.data()));
+            }
+            // and update the variable in the getX controller to access it from the users pages
+            homeCntrl.updateMsgList(messages: _messagesList);
+            homeCntrl.updateLoading(false);
+            messageBubbles=[];
+            updateReadStatus();
+          }
+        return SafeArea(
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: Container(
+              width: double.maxFinite,
+              padding: EdgeInsets.symmetric(horizontal: 31.w, vertical: 3.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10.h),
+                      child: messageBubbles.isEmpty
+                          ? homeCntrl.loading
+                              ? ChatSkeltonWidget()
+                              : Center(
+                                  child: Text(
+                                    'Start by writing your first message',
+                                    style: TextStyle(
+                                      color: blueGray,
+                                      fontSize: 16.sp,
+                                      fontFamily: 'Urbanist',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                )
+                          : ListView(
+                              reverse: true,
+                              children: messageBubbles,
+                            ),
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                  _buildMessageBlock(context),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+    );
+  }
+
+  void updateReadStatus() {
+    print('----------------------------------------');
+    // A function to update the read status of unread messages
+    // and group the messages by date
+
+    // A map to group the messages by date
+    // each date will have a list of messages
+    Map<String, List<MessageModel>> groupedMessages = {};
+
+    DocumentReference document = FirebaseFirestore.instance
+        .collection('Messages')
+        .doc(homeCntrl.selectedChatId);
 
     for (int i = 0; i < homeCntrl.messagesList.length; i++) {
+
       if (homeCntrl.messagesList[i].sender == 'user1' &&
-          !homeCntrl.messagesList[i].read ) {
-        FirebaseFirestore.instance
-            .collection('Messages')
-            .doc(homeCntrl.selectedChatId)
+          !homeCntrl.messagesList[i].read) {
+        // If the message is from user 2 and it is marked as unread,
+        // update it to read
+        document
             .collection('Messages_list')
             .doc(homeCntrl.messagesList[i].messageId)
             .update({'read': true});
       }
-      MessageBubble chat = MessageBubble(
-        message: homeCntrl.messagesList[i].message,
-        time:
-            '${homeCntrl.messagesList[i].time.toDate().hour}:${homeCntrl.messagesList[i].time.toDate().minute}',
-        user: homeCntrl.messagesList[i].sender == 'user2',
-        read: homeCntrl.messagesList[i].read,
-      );
-      messages.add(chat);
-    }
-    FirebaseFirestore.instance
-        .collection('Messages')
-        .doc(homeCntrl.selectedChatId)
-        .update({'user2_count': 0});
 
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        // appBar: _buildAppBar(context),
-        body: Container(
-          width: double.maxFinite,
-          padding: EdgeInsets.symmetric(horizontal: 31.w, vertical: 3.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 10.h),
-                  child: ListView(
-                    reverse: true,
-                    children: messages,
-                  ),
+      String date = timeStampToDate(homeCntrl.messagesList[i].time);
+      groupedMessages.putIfAbsent(date, () => []);
+      groupedMessages[date]!.add(homeCntrl.messagesList[i]);
+    }
+
+    groupedMessages.forEach(
+      (date, messages) {
+        messageBubbles.addAll(
+          messages.map(
+            (message) => MessageBubble(
+              message: message.message,
+              time: timeStampToTime(message.time),
+              user: message.sender == 'user2',
+              read: message.read,
+            ),
+          ),
+        );
+        messageBubbles.add(
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.h),
+            child: Center(
+              child: Text(
+                date,
+                style: TextStyle(
+                  color: blueGray.withOpacity(0.5),
+                  fontSize: 14.sp,
+                  fontFamily: 'Urbanist',
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 10.h),
-              _buildMessageBlock(context),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
+
+    // Update the user count to 0 (No unread messages).
+    document.update({'user2_count': 0});
   }
 
   Widget _buildMessageBlock(BuildContext context) {
-    return Row(children: [
-      Expanded(
-        child: CostumeTextField(
-          controller: messageController,
-          hint: "Type a message ...",
-          textInputAction: TextInputAction.done,
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(left: 16.w),
-        child: CustomIconButton(
-          onTap:() async {
-            if(messageController.text.isNotEmpty){
-
-              DocumentReference doc = await FirebaseFirestore.instance
-                  .collection('Messages')
-                  .doc(homeCntrl.selectedChatId)
-                  .collection('Messages_list')
-                  .add(
-                {
-                  'message': messageController.text,
-                  'sender': 'user2',
-                  'time': DateTime.now(),
-                  'read': false,
-                  'message_id': '',
-                },
-              );
-              await FirebaseFirestore.instance
-                  .collection('Messages')
-                  .doc(homeCntrl.selectedChatId)
-                  .collection('Messages_list')
-                  .doc(doc.id)
-                  .update({'message_id': doc.id});
-              await FirebaseFirestore.instance
-                  .collection('Messages')
-                  .doc(homeCntrl.selectedChatId)
-                  .update(
-                {
-                  'user1_count': homeCntrl.user1Count + 1,
-                },
-              );
-              messageController.clear();
-            }
-          },
-          height: 53.h,
-          width: 53.w,
-          padding: EdgeInsets.all(15.w),
-          child: CustomImageView(imagePath: ImageConstant.imgSave),
-        ),
-      )
-    ]);
+    return MessageBlock(
+      messageController: messageController,
+      onTap: () async {
+        if (messageController.text.isNotEmpty) {
+          FireStoreServices services = FireStoreServices();
+          services.sendMessage(
+            message: messageController.text,
+            sender: 'user2',
+            selectedChat: homeCntrl.selectedChatId,
+            userCount: homeCntrl.user1Count,
+            userCountN: 'user1_count',
+          );
+          messageController.clear();
+        }
+      },
+    );
   }
 }
