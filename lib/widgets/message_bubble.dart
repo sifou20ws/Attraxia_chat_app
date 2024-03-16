@@ -1,6 +1,4 @@
-import 'package:attraxia_chat_app/core/constants/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:attraxia_chat_app/core/app_export.dart';
 
 class MessageBubble extends StatelessWidget {
   const MessageBubble({required this.message,required this.time,required this.user,required this.read});
@@ -20,7 +18,7 @@ class MessageBubble extends StatelessWidget {
           ),
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
           decoration: BoxDecoration(
-            color: user ? gray200 :  deepPurpleA200,
+            color: user ? gray200 :  Purple,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15.h),
               topRight: Radius.circular(15.h),
@@ -56,7 +54,7 @@ class MessageBubble extends StatelessWidget {
                   ),
                   if(user)
                     Text(
-                      read ?' • Read' : ' • Pending',
+                      read ?' • Read' : ' • Sent',
                       style: TextStyle(
                         color: user? Colors.black45 : Colors.white60,
                         fontSize: 11.sp,
